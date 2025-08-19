@@ -1,0 +1,99 @@
+# -----------------------
+# 📁 Carpetas del sistema
+# -----------------------
+node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+.pnpm-debug.log*
+
+# -----------------------
+# 🧱 Build / Compilación
+# -----------------------
+/dist
+/build
+/out
+/coverage
+
+# Si usas TypeScript
+*.tsbuildinfo
+*.js.map
+*.d.ts
+
+# -----------------------
+# 🔐 Configuraciones locales
+# -----------------------
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# -----------------------
+# 🗂️ Archivos del sistema
+# -----------------------
+.DS_Store           # macOS
+Thumbs.db           # Windows
+desktop.ini         # Windows
+*.swp
+*.swo
+*~
+
+# -----------------------
+# 📊 Logs
+# -----------------------
+logs
+*.log
+log/
+
+# -----------------------
+# 🧰 IDEs y editores
+# -----------------------
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# IntelliJ / WebStorm
+.idea/
+*.iml
+
+# Vim
+*.vim
+.*.sw[a-z]
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+
+# -----------------------
+# 📦 Artifacts de NPM
+# -----------------------
+# No ignores package.json ni README, ¡son esenciales!
+# Pero ignora archivos generados al publicar
+.npm
+
+# Carpeta temporal de npm pack
+npm-tmp/
+
+# -----------------------
+# 🧪 Testing
+# -----------------------
+coverage/
+.nyc_output/
+
+# -----------------------
+# 📂 Carpetas de desarrollo (opcional)
+# -----------------------
+temp/
+tmp/
+
+# -----------------------
+# 🧩 pnpm específico (si usas pnpm en desarrollo)
+# -----------------------
+.pnpm
+shrinkwrap.yaml
