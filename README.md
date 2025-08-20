@@ -1,6 +1,6 @@
-# 🦁 PridePN – Wrapper de pnpm con registry personalizado
+# 🐺 Wilder – Wrapper de pnpm con registry personalizado
 
-> Un wrapper ligero y poderoso de `pnpm` que ejecuta todos los comandos con un **registry predefinido**, ideal para equipos, CI/CD o usuarios que usan mirrors o registries privados.
+> Un wrapper ligero y poderoso de `pnpm` que no gasta datos, que ejecuta todos los comandos con un **registry predefinido**, ideal para equipos, CI/CD o usuarios que usan mirrors o registries privados. 
 
 🚀 Ejecuta `pnpm` como siempre, pero con el registry que necesitas — sin configuraciones manuales.
 
@@ -31,7 +31,7 @@ Este wrapper ejecuta cualquier comando de `pnpm` (como `install`, `add`, `update
 ### Opción 1: Instalar globalmente (recomendado)
 
 ```bash
-npm install -g pridepn
+npm install -g wilder
 ```
 
 > 💡 Puedes cambiar el nombre a `roar`, `mypnpm`, `aquila`, etc.
@@ -39,8 +39,8 @@ npm install -g pridepn
 ### Opción 2: Usar directamente con `npx` (sin instalar)
 
 ```bash
-npx pridepn install
-npx pridepn add lodash
+npx wilder install
+npx wilder add lodash
 ```
 
 ---
@@ -50,14 +50,14 @@ npx pridepn add lodash
 Una vez instalado, usa `pridepn` como si fuera `pnpm`:
 
 ```bash
-pridepn install
-pridepn add react
-pridepn remove axios
-pridepn update
-pridepn list
+wilder install
+wilder add react
+wilder remove axios
+wilder update
+wilder list
 ```
 
-Todos los comandos se ejecutarán automáticamente con el registry configurado (por ejemplo: `https://registry.npmmirror.com`).
+Todos los comandos se ejecutarán automáticamente con el registry configurado (por ejemplo: `http://nexus.uclv.edu.cu/repository/npm/'`).
 
 ---
 
@@ -66,7 +66,7 @@ Todos los comandos se ejecutarán automáticamente con el registry configurado (
 El registry usado es:
 
 ```
-https://registry.npmmirror.com
+http://nexus.uclv.edu.cu/repository/npm/'
 ```
 
 > 📌 Este valor está definido en el código (`CUSTOM_REGISTRY`) y puede cambiarse fácilmente antes de publicar.
@@ -75,10 +75,10 @@ https://registry.npmmirror.com
 
 ## 🧩 ¿Quieres usar tu propio registry?
 
-Edita el archivo `index.js` y cambia:
+Edita el archivo `wilder.js` y cambia:
 
 ```js
-const CUSTOM_REGISTRY = 'https://tu-registry.com';
+const CUSTOM_REGISTRY = 'http://nexus.uclv.edu.cu/repository/npm/'';
 ```
 
 Luego vuelve a publicar o usa localmente con `npm link`.
@@ -90,57 +90,14 @@ Luego vuelve a publicar o usa localmente con `npm link`.
 Clona el repositorio y enlázalo globalmente:
 
 ```bash
-git clone https://github.com/tu-usuario/pridepn.git
-cd pridepn
+git clone https://github.com/JohnyYen/wilder
+cd wilder
 npm link
 ```
 
 Ahora puedes probarlo en cualquier proyecto:
 
 ```bash
-pridepn install
+wilder install
 ```
 
----
-
-## 📦 Publicación (para mantenedores)
-
-```bash
-npm version patch
-npm publish
-```
-
-Asegúrate de tener acceso al nombre del paquete en [npmjs.com](https://npmjs.com).
-
----
-
-## 📎 Licencia
-
-MIT © [Tu Nombre]
-
----
-
-> Creado con ❤️ y orgullo de manada.
-
-
----
-
-### ✅ ¿Cómo personalizarlo?
-
-1. **Cambia el nombre**: Reemplaza `pridepn` por el que quieras: `roar`, `mane`, `aquila`, `pnpm-mirror`, etc.
-2. **Cambia el registry**: Edita `CUSTOM_REGISTRY` en `index.js`
-3. **Cambia el logo**: Puedes agregar un ícono o banner en la cabecera
-
----
-
-### 🎁 Bonus: Agrega un badge de versión
-
-Si lo publicas en NPM, añade esto bajo el título:
-
-
-![npm](https://img.shields.io/npm/v/pridepn?label=version)
-```
-
----
-
-¿Quieres que te genere también un `package.json` completo, un `LICENSE`, o un `CHANGELOG.md` para este proyecto? Puedo darte todo listo para publicar.
