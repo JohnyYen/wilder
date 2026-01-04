@@ -28,6 +28,8 @@ yarn-debug.log
 .env.development
 .env.production
 .env.test
+.wilderrc
+.npmrc
 
 # -----------------------
 # 🗂️ Archivos del sistema
@@ -96,4 +98,4 @@ tmp/
 # 🧩 pnpm específico (si usas pnpm en desarrollo)
 # -----------------------
 .pnpm
-shrinkwrap.yaml
+shrinkwrap.yaml.npmrc

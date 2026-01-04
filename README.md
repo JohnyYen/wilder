@@ -1,31 +1,35 @@
-# 🐺 Wilder – Wrapper de gestores de paquetes con registry personalizado
+# 🐺 Wilder – Wrapper de npm con registry personalizado
 
-> Un wrapper ligero y poderoso que permite usar `npm`, `yarn`, `pnpm` o `bun` con un **registry predefinido**, ideal para equipos, CI/CD o usuarios que usan mirrors o registries privados.
+> Un wrapper ligero para `npm` que inyecta automáticamente un registry personalizado en todos los comandos, con la capacidad de cambiar el registry dinámicamente.
 
-🚀 Ejecuta tus comandos de gestión de paquetes como siempre, pero con el registry que necesitas — sin configuraciones manuales.
+🚀 Ejecuta tus comandos de npm como siempre, pero con el registry que necesites — sin configuraciones manuales ni recordar flags.
 
 ---
 
 ## 🌟 ¿Qué hace?
 
-Este wrapper detecta los gestores de paquetes disponibles (`npm`, `yarn`, `pnpm`, `bun`) y al ejecutarlos, **inyecta automáticamente un registry personalizado**, definido directamente en el código.
+Este wrapper inyecta automáticamente un registry personalizado en todos los comandos de `npm`. El registry se puede cambiar dinámicamente mediante comandos específicos y se guarda en un archivo de configuración local `.wilderrc`.
 
 ✅ No necesitas modificar `.npmrc`
 ✅ No necesitas recordar `--registry=...`
-✅ Compatible con todos los principales gestores de paquetes
-✅ Interfaz interactiva para seleccionar gestor de paquetes
+✅ Cambia el registry dinámicamente con comandos simples
+✅ Valida URLs antes de guardarlas
 ✅ Ideal para entornos corporativos, CI o desarrollo en regiones con acceso lento a npm
 
 ---
 
 ## 🔧 Características
 
-- Compatible con `npm`, `yarn`, `pnpm`, y `bun`
-- Registry preconfigurado (ej: mirror chino, registry privado, Nexus, etc.)
-- Sistema interactivo para seleccionar gestor de paquetes
-- Fácil de instalar y usar
-- Transparente: los comandos son idénticos a los originales
-- Extensible: puedes personalizarlo con más lógica (logging, validación, etc.)
+- Inyección automática de registry en todos los comandos npm
+- Sistema de configuración local mediante archivo `.wilderrc`
+- Comandos para gestionar el registry:
+  - `set-registry <url>` - Configura un nuevo registry
+  - `get-registry` - Muestra el registry actual
+  - `reset-registry` - Resetea al registry por defecto
+- Validación de formato y accesibilidad de URLs
+- Normalización automática de URLs (agrega `/` al final)
+- Prompt de confirmación si el URL no es accesible
+- Registry por defecto configurable
 
 ---
 
@@ -36,8 +40,6 @@ Este wrapper detecta los gestores de paquetes disponibles (`npm`, `yarn`, `pnpm`
 ```bash
 npm install -g wilder-pnpm
 ```
-
-> 💡 Puedes cambiar el nombre a `wilder`, `roar`, `mypackages`, etc.
 
 ### Opción 2: Usar directamente con `npx` (sin instalar)
 
@@ -50,55 +52,86 @@ npx wilder-pnpm add lodash
 
 ## 🛠️ Uso
 
-Una vez instalado, ejecuta `wilder-pnpm` y selecciona el gestor de paquetes que deseas usar:
+### Gestionar el Registry
 
 ```bash
-wilder-pnpm
+# Ver el registry actual
+wilder get-registry
+
+# Configurar un nuevo registry (valida formato y accesibilidad)
+wilder set-registry https://registry.npmjs.org/
+
+# Resetear al registry por defecto
+wilder reset-registry
 ```
 
-El programa detectará los gestores disponibles y te permitirá elegir:
-```
-Paquetes managers disponibles:
-1. npm
-2. yarn
-3. pnpm
-¿Qué paquete manager deseas usar? (1-3): 1
-```
+### Ejecutar Comandos de npm
 
-Luego puedes usar cualquier comando como harías normalmente:
+Todos los comandos de npm funcionan normalmente, con el registry inyectado automáticamente:
+
 ```bash
-wilder-pnpm install
-wilder-pnpm add react
-wilder-pnpm remove axios
-wilder-pnpm update
-wilder-pnpm list
-```
+# Instalar dependencias
+wilder install
 
-Todos los comandos se ejecutarán automáticamente con el registry configurado (por ejemplo: `http://nexus.uclv.edu.cu/repository/npm/`).
+# Agregar un paquete
+wilder add react
+
+# Agregar con flags
+wilder add axios --save-dev
+
+# Actualizar paquetes
+wilder update
+
+# Listar paquetes
+wilder list
+
+# Cualquier comando de npm
+wilder <comando>
+```
 
 ---
 
-## 🔐 Registry predeterminado
+## 🔐 Registry Predeterminado
 
-El registry usado es:
+El registry por defecto es:
 
 ```
 http://nexus.uclv.edu.cu/repository/npm/
 ```
 
-> 📌 Este valor está definido en el código (`CUSTOM_REGISTRY`) y puede cambiarse fácilmente antes de publicar.
+Este valor está definido en el código (`config.js`) y se usa cuando no hay un archivo `.wilderrc` en el proyecto.
 
 ---
 
-## 🧩 ¿Quieres usar tu propio registry?
+## 🧩 Archivo de Configuración (.wilderrc)
 
-Edita el archivo `wilder.js` y cambia:
+El wrapper crea un archivo `.wilderrc` en el directorio del proyecto cuando configuras un registry personalizado:
 
-```js
-const CUSTOM_REGISTRY = 'http://nexus.uclv.edu.cu/repository/npm/';
+```json
+{
+  "registry": "https://registry.npmjs.org/"
+}
 ```
 
-Luego vuelve a publicar o usa localmente con `npm link`.
+Este archivo es local al proyecto, por lo que diferentes proyectos pueden usar diferentes registries.
+
+**Nota:** Este archivo no debe ser commiteado al repositorio (agregado a `.gitignore` si no está).
+
+---
+
+## 🔍 Validación de URLs
+
+Cuando configuras un nuevo registry, el wrapper realiza dos validaciones:
+
+1. **Validación de formato:** Verifica que sea un URL válido (comience con `http://` o `https://`).
+
+2. **Validación de accesibilidad:** Intenta hacer una petición al URL para verificar que es accesible.
+
+Si el URL no es accesible, te preguntará si quieres guardarlo de todas formas:
+
+```
+⚠️ URL no es accesible. ¿Quieres guardarlo de todas formas? (y/n): y
+```
 
 ---
 
@@ -115,6 +148,67 @@ npm link
 Ahora puedes probarlo en cualquier proyecto:
 
 ```bash
-wilder-pnpm install
+wilder install
 ```
 
+---
+
+## 📝 Ejemplos de Uso
+
+```bash
+# 1. Ver registry por defecto
+wilder get-registry
+# → ✅ Registry actual: http://nexus.uclv.edu.cu/repository/npm/
+
+# 2. Cambiar a npmjs
+wilder set-registry https://registry.npmjs.org/
+# → ✅ Registry configurado a: https://registry.npmjs.org/
+
+# 3. Verificar que cambió
+wilder get-registry
+# → ✅ Registry actual: https://registry.npmjs.org/
+
+# 4. Instalar paquetes (usa el nuevo registry)
+wilder install
+
+# 5. Intentar URL inválida
+wilder set-registry not-a-url
+# → ❌ URL inválida: debe ser un URL válido (ej: https://registry.npmjs.org/)
+
+# 6. Resetear a default
+wilder reset-registry
+# → ✅ Registry reseteado al valor por defecto: http://nexus.uclv.edu.cu/repository/npm/
+
+# 7. Instalar usando registry local (verdaccio)
+wilder set-registry http://localhost:4873/
+# → ✅ Registry configurado a: http://localhost:4873/
+
+# 8. Agregar paquete con banderas
+wilder add lodash --save-exact
+```
+
+---
+
+## 🔧 Comandos Disponibles
+
+| Comando | Descripción |
+|---------|-------------|
+| `wilder set-registry <url>` | Configura un nuevo registry. Valida formato y accesibilidad. |
+| `wilder get-registry` | Muestra el registry actual configurado. |
+| `wilder reset-registry` | Elimina `.wilderrc` y usa el registry por defecto. |
+| `wilder <npm-comando>` | Ejecuta cualquier comando de npm con el registry inyectado. |
+
+---
+
+## ⚠️ Consideraciones
+
+- El archivo `.wilderrc` se crea en el directorio actual donde ejecutas el comando `set-registry`.
+- Si ejecutas `wilder` en un subdirectorio, buscará `.wilderrc` en ese subdirectorio.
+- El wrapper solo funciona con `npm` por ahora (no soporta yarn, pnpm, o bun).
+- La validación de accesibilidad tiene un timeout de 5 segundos.
+
+---
+
+## 📄 Licencia
+
+ISC

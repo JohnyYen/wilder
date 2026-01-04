@@ -1,11 +1,14 @@
 {
-  "name": "wilder-pnpm",
-  "version": "2.0.0",
+  "name": "@johny_yen/wilder-wrapper",
+  "version": "1.0.0",
   "description": "A lightweight wrapper for package managers (npm, yarn, pnpm, bun) that injects a custom registry automatically",
   "main": "wilder.js",
   "bin": {
-    "wilder": "./wilder.js",
-    "wilder-pnpm": "./wilder.js"
+    "wilder": "wilder.js",
+    "wilder-pnpm": "wilder.js"
+  },
+  "publicConfig": {
+    "access": "public"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -22,5 +25,7 @@
   ],
   "author": "JohnyYen",
   "license": "ISC",
-  "dependencies": {}
+  "dependencies": {
+    "mongoose": "^9.1.1"
+  }
 }
